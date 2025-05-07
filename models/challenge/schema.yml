@@ -34,6 +34,7 @@ sources:
 
 
 models:
+
   - name: stg_raw__sales
     description: sales raw data
 
@@ -45,10 +46,21 @@ models:
 
   - name: int_sales_margin
     description: sales + products
-
+    columns:
+      - name: (orders_id, products_id)
+        tests:
+          - unique
+      - name: (orders_id, products_id, date_date, revenue, quantity, purchase_cost, margin)
+        tests:
+          - not_null
+          
   - name: int_orders_margin
     description: margin in orders
   
   - name: int_orders_operational
-    description: operational orders
-    
+    description: orders
+
+  - name: finance_days
+    description: uaks
+
+
