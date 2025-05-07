@@ -1,0 +1,66 @@
+version: 2
+
+sources: 
+  - name: raw
+    schema: gz_raw_data
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
+        description: sales of Greenweez / we have on row per product_id found in each orders_id
+        columns:
+           - name: (orders_id, pdt_id)
+             description: concat orders_id and pdt_id
+             tests:
+             - unique
+           
+      - name: product  
+        identifier: raw_gz_product
+        description: price of products of Greenweez / we got a price per product_id
+        columns:
+           - name: products_id
+             description: products id
+             tests:
+               - not_null
+               - unique
+      - name: ship
+        identifier: raw_gz_ship
+        description: cost of shipping per order_id
+        columns:
+          - name: orders_id
+            description: orders_id
+            tests:
+              - not_null
+              - unique
+
+
+models:
+
+  - name: stg_raw__sales
+    description: sales raw data
+
+  - name: stg_raw_product
+    description: products id
+
+  - name: stg_raw_ship
+    description: shipping cost
+
+  - name: int_sales_margin
+    description: sales + products
+    columns:
+      - name: (orders_id, products_id)
+        tests:
+          - unique
+      - name: (orders_id, products_id, date_date, revenue, quantity, purchase_cost, margin)
+        tests:
+          - not_null
+          
+  - name: int_orders_margin
+    description: margin in orders
+  
+  - name: int_orders_operational
+    description: orders
+
+  - name: finance_days
+    description: uaks
+
+
